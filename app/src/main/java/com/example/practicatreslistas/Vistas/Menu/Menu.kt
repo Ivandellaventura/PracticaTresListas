@@ -152,22 +152,7 @@ fun Menu(navController: NavHostController) {
                                             text = " Vs ${pokemon.gimnasioEnemigo} , ${pokemon.fecha}",
                                             textAlign = TextAlign.Center
                                         )
-                                        if (botonCheck == true) {
-                                            Checkbox(
-                                                checked = CheckPulsado,
-                                                onCheckedChange = {
-                                                    CheckPulsado = !CheckPulsado
-                                                },
-                                                enabled = habilitado,
-                                                modifier = Modifier
-                                            )
 
-                                            if (CheckPulsado == true) {
-                                                Borrar.add(listaMutable.indexOf(pokemon))
-
-
-                                            }
-                                        }
                                     }
 
                                     Text(
@@ -215,22 +200,7 @@ fun Menu(navController: NavHostController) {
                                             text = " Vs ${pokemon.gimnasioEnemigo} , ${pokemon.fecha}",
                                             textAlign = TextAlign.Center
                                         )
-                                        if (botonCheck == true) {
-                                            Checkbox(
-                                                checked = CheckPulsado,
-                                                onCheckedChange = {
-                                                    CheckPulsado = !CheckPulsado
-                                                },
-                                                enabled = habilitado,
-                                                modifier = Modifier
-                                            )
 
-                                            if (CheckPulsado == true) {
-                                                Borrar.add(listaMutable.indexOf(pokemon))
-
-
-                                            }
-                                        }
                                     }
 
                                     Text(

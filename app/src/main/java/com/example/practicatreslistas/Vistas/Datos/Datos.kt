@@ -75,8 +75,26 @@ fun DatosPokemon(navController: NavHostController){
             })
         BackHandler {
 
-            fecha = state.selectedDateMillis?.let { convertirMillisAFecha(it) }.toString()
             victorias = movimientoSlider.toInt().toString()
+            if(nombre.isEmpty()){
+                nombre = "Charmander"
+            }
+            if(tipo.isEmpty()){
+                tipo = "Fuego"
+            }
+            if(gimnasioJugador.isEmpty()){
+                gimnasioJugador = "Gimnasio Lucha de Ciudad Azafrán"
+            }
+            if(gimnasioEnemigo.isEmpty()){
+                gimnasioEnemigo = "Gimnasio Volador de Ciudad Celeste"
+        }
+            if(fecha.isEmpty()){
+                fecha = "9/11/2001"
+            }else{
+                fecha = state.selectedDateMillis?.let { convertirMillisAFecha(it) }.toString()
+
+
+            }
 
             Datos().Añadir(nombre = nombre,tipo = tipo,gimnasioJugador= gimnasioJugador,gimnasioEnemigo = gimnasioEnemigo,fecha= fecha,victorias=victorias)
             navController.popBackStack()
