@@ -60,9 +60,9 @@ fun Menu(navController: NavHostController) {
             addAll(ArrayBox)
         }
     }
-    var botonCheck by remember { mutableStateOf(false) }
     var borrar by remember { mutableStateOf(false) }
-    var Borrar = ArrayList<Int>()
+    var selectedForDeletion by remember { mutableStateOf(mutableSetOf<Pokemon>()) }
+    var myState by remember { mutableStateOf(false) }
 
 
     Column(Modifier.fillMaxSize()) {
@@ -161,6 +161,19 @@ fun Menu(navController: NavHostController) {
                                         modifier = Modifier.fillMaxWidth()
                                     )
                                 }
+                                if (borrar) {
+                                    Checkbox(
+                                        checked = myState,
+                                        onCheckedChange = { checked ->
+                                            if (checked) {
+                                                selectedForDeletion.add(pokemon)
+                                            } else {
+                                                selectedForDeletion.remove(pokemon)
+                                            }
+                                        },
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                }
                             }
 
                         }
@@ -209,6 +222,19 @@ fun Menu(navController: NavHostController) {
                                         modifier = Modifier.fillMaxWidth()
                                     )
                                 }
+                                if (borrar) {
+                                    Checkbox(
+                                        checked = myState,
+                                        onCheckedChange = { checked ->
+                                            if (checked) {
+                                                selectedForDeletion.add(pokemon)
+                                            } else {
+                                                selectedForDeletion.remove(pokemon)
+                                            }
+                                        },
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                }
                             }
 
                         }
@@ -237,27 +263,24 @@ fun Menu(navController: NavHostController) {
                 )
             }
             ExtendedFloatingActionButton(onClick = {
-                if (borrar == false) {
-                    botonCheck = !botonCheck
-                    borrar = true
-                } else {
-                    for (i in 0 until Borrar.size - 1) {
-                        // i = 0,1,2
-                        ArrayBox.removeAt(Borrar[i])
-                        println(ArrayBox.size)
+                borrar = !borrar
+                if (!borrar) {
+                    // Eliminar elementos marcados
+                    if (selectedForDeletion.isNotEmpty()) {
+                        selectedForDeletion.forEach { pokemon ->
+                            ArrayBox.remove(pokemon)
+                        }
                         listaMutable.clear()
-                        Borrar.clear()
                         listaMutable.addAll(ArrayBox)
+                        selectedForDeletion.clear()
                     }
-                    botonCheck = !botonCheck
                 }
-                println(Borrar.size)
-                // borrar -> 2,4,1
-                // solo borrar cuando pase de verdadeor a falso
-
             }) {
-                Text(text = "Borrar")
-                Icon(painterResource(id = R.drawable.baseline_delete_forever_24), contentDescription = null)
+                Text(text = if (borrar) "Cancelar" else "Borrar")
+                Icon(
+                    painterResource(id = if (borrar) R.drawable.baseline_delete_forever_24 else R.drawable.baseline_delete_forever_24),
+                    contentDescription = null
+                )
             }
         }
 
