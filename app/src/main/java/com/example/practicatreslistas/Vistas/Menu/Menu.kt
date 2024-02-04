@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -62,7 +64,7 @@ fun Menu(navController: NavHostController) {
     }
     var borrar by remember { mutableStateOf(false) }
     var selectedForDeletion by remember { mutableStateOf(mutableSetOf<Pokemon>()) }
-    var myState by remember { mutableStateOf(false) }
+
 
 
     Column(Modifier.fillMaxSize()) {
@@ -162,14 +164,22 @@ fun Menu(navController: NavHostController) {
                                     )
                                 }
                                 if (borrar) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    var selecionado by remember {
+                                        mutableStateOf(pokemon.seleccionado)
+                                    }
                                     Checkbox(
-                                        checked = myState,
-                                        onCheckedChange = { checked ->
-                                            if (checked) {
+                                        checked = selecionado,
+                                        onCheckedChange = { isChecked ->
+                                            pokemon.seleccionado = isChecked
+                                            selecionado = isChecked
+                                            if(isChecked){
                                                 selectedForDeletion.add(pokemon)
-                                            } else {
+                                            }else{
                                                 selectedForDeletion.remove(pokemon)
                                             }
+
+
                                         },
                                         modifier = Modifier.padding(8.dp)
                                     )
@@ -189,8 +199,7 @@ fun Menu(navController: NavHostController) {
                         Column {
 
 
-                            var CheckPulsado by remember { mutableStateOf(false) }
-                            var habilitado by remember { mutableStateOf(true) }
+
                             Row(modifier = Modifier.fillMaxWidth()) {
                                 Image(
                                     painterResource(id = Datos().DatosImagen(pokemon.nombre)),
@@ -223,14 +232,22 @@ fun Menu(navController: NavHostController) {
                                     )
                                 }
                                 if (borrar) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    var selecionado by remember {
+                                        mutableStateOf(pokemon.seleccionado)
+                                    }
                                     Checkbox(
-                                        checked = myState,
-                                        onCheckedChange = { checked ->
-                                            if (checked) {
+                                        checked = selecionado,
+                                        onCheckedChange = { isChecked ->
+                                            pokemon.seleccionado = isChecked
+                                            selecionado = isChecked
+                                            if(isChecked){
                                                 selectedForDeletion.add(pokemon)
-                                            } else {
+                                            }else{
                                                 selectedForDeletion.remove(pokemon)
                                             }
+
+
                                         },
                                         modifier = Modifier.padding(8.dp)
                                     )
@@ -264,19 +281,24 @@ fun Menu(navController: NavHostController) {
             }
             ExtendedFloatingActionButton(onClick = {
                 borrar = !borrar
+
                 if (!borrar) {
                     // Eliminar elementos marcados
+
                     if (selectedForDeletion.isNotEmpty()) {
-                        selectedForDeletion.forEach { pokemon ->
-                            ArrayBox.remove(pokemon)
-                        }
-                        listaMutable.clear()
-                        listaMutable.addAll(ArrayBox)
+                        ArrayBox.removeAll(selectedForDeletion)
+                        // Eliminar elementos de ArrayBox
+
+
                         selectedForDeletion.clear()
+                        navController?.navigate(Rutas.PantallaMenu.ruta)
                     }
                 }
             }) {
-                Text(text = if (borrar) "Cancelar" else "Borrar")
+                Text(
+                    text = if (borrar && selectedForDeletion.isNotEmpty()) "Confirmar" else if (borrar) "Cancelar" else "Borrar"
+                )
+
                 Icon(
                     painterResource(id = if (borrar) R.drawable.baseline_delete_forever_24 else R.drawable.baseline_delete_forever_24),
                     contentDescription = null
